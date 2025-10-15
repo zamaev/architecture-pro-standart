@@ -1,0 +1,30 @@
+@startuml context
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include <office/users/users.puml>
+
+title Deposite - Context - TO BE
+
+Person(client, "Клиент")
+
+Person(deposite, "Управление обслуживанием депозитных продуктов", $sprite="users")
+Person(call, "Кол-центр", $sprite="users")
+Person(call_partner, "Кол-центр\nпартнера", $sprite="users")
+
+
+System_Boundary(standart, "Банк Стандарт") {
+    System(crm, "CRM", "React.js\nJava Spring Boot\nPostgreSQL")
+    System(abs, "АБС", "Delphi\nPL-SQL\nOracle")
+}
+
+
+Rel(client, call, "Запрос ставок")
+Rel(client, call_partner, "Запрос ставок")
+
+Rel(call, crm, "Получение ставок")
+Rel(crm, abs, "Получение ставок")
+
+Rel(deposite, abs, "Загрузка ставок по депозитам")
+Rel(abs, call_partner, "Новые ставки в виде файла почтой")
+
+@enduml
