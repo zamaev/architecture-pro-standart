@@ -1,0 +1,43 @@
+@startuml context
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include <office/users/users.puml>
+
+title Deposite - Context - TO BE
+
+Person(client, "Клиент")
+
+Person(deposite, "Управление обслуживанием депозитных продуктов", $sprite="users")
+Person(credit, "Управление обслуживанием кредитных продуктов", $sprite="users")
+Person(call, "Кол-центр", $sprite="users")
+
+
+System_Boundary(standart, "Банк Стандарт") {
+    System(site, "Сайт", "React.js\nPHP")
+    System(bank, "Интернет-банк", "ASP.NET\nMS SQL")
+    System(crm, "CRM", "React.js\nJava Spring Boot\nPostgreSQL")
+    System(abs, "АБС", "Delphi\nPL-SQL\nOracle")
+    System(sms, "SMS-шлюз")
+}
+System_Ext(telecom, "Телеком-оператор")
+
+
+Rel(client, site, "Предложения по депозитам\nЗаявка на депозит")
+Rel(client, bank, "Предложения по депозитам\nЗаявка на депозит")
+Rel(client, call, "Заявка на депозит")
+
+Rel(call, crm, "Заявка на депозит")
+Rel(site, crm, "Заявка на депозит")
+
+Rel(bank, abs, "Предложения по депозитам\nЗаявки на депозит")
+Rel(crm, abs, "Заявка на депозит")
+Rel(site, abs, "Предложения по депозитам")
+Rel(deposite, abs, "Обработка заявок\nЗагрузка ставок по депозитам")
+Rel(credit, abs, "Расчет кредитного риска\nЗагрузка кредитных рисков")
+
+Rel(abs, sms, "SMS: Депозит одобрен")
+Rel(bank, sms, "Код подтверждения")
+
+Rel(sms, telecom, "")
+
+@enduml
